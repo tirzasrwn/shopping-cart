@@ -12,8 +12,8 @@ import (
 // Get Categories
 //
 //	@Tags			Product
-//	@Summary		Get category
-//	@Description	This is API to get category
+//	@Summary		Get prouct by category_id
+//	@Description	This is API to get product by category_id
 //	@Param			category_id	query	int	true	"category_id"
 //	@Produce		json
 //	@Router			/product [get]

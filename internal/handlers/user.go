@@ -10,10 +10,14 @@ func (m *module) GetUserByEmail(email string) (user *models.User, err error) {
 	return
 }
 
-func (m *module) InsertUser(user *models.User) error {
-	err := m.db.dbrepo.InsertUser(user)
+func (m *module) InsertUser(user *models.User) (int, error) {
+	userID, err := m.db.dbrepo.InsertUser(user)
 	if err != nil {
-		return err
+		return 0, err
 	}
-	return nil
+	_, err = m.db.dbrepo.CreateCartForNewUser(userID)
+	if err != nil {
+		return 0, err
+	}
+	return userID, nil
 }

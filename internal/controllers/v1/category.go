@@ -11,8 +11,8 @@ import (
 // Get product by category id
 //
 //	@Tags			Category
-//	@Summary		Get product by category id
-//	@Description	This is API to get product by category id
+//	@Summary		Get category
+//	@Description	This is API to get category
 //	@Produce		json
 //	@Router			/category [get]
 func GetCategories(c *gin.Context) {

@@ -31,8 +31,8 @@ func GetUserByEmail(c *gin.Context) {
 // Post User
 //
 //	@Tags			User
-//	@Summary		Post new user
-//	@Description	This is API to post new user
+//	@Summary		Create new user
+//	@Description	This is API to create new user
 //	@Param			email		query	string	true	"email"
 //	@Param			password	query	string	true	"password"
 //	@Produce		json
@@ -44,7 +44,7 @@ func PostUser(c *gin.Context) {
 		Email:    email,
 		Password: password,
 	}
-	err := handlers.Handlers.InsertUser(&user)
+	_, err := handlers.Handlers.InsertUser(&user)
 	if err != nil {
 		utils.ErrorJSON(c, err)
 		return

@@ -32,21 +32,58 @@ func (m *PostgresDBRepo) GetUserByEmail(email string) (*models.User, error) {
 }
 
 // InsertUser creates new user.
-func (m *PostgresDBRepo) InsertUser(user *models.User) error {
+func (m *PostgresDBRepo) InsertUser(user *models.User) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	stmt := `insert into public.user (email, password)
-			values ($1, $2)`
+	query := `insert into public.user (email, password) values ($1, $2) returning id`
 
-	_, err := m.DB.ExecContext(ctx, stmt,
+	row := m.DB.QueryRowContext(ctx, query,
 		user.Email,
 		user.Password,
 	)
-
+	var userID int
+	err := row.Scan(&userID)
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	return nil
+	return userID, nil
+}
+
+func (m *PostgresDBRepo) CreateCartForNewUser(userID int) (int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `insert into public.cart (user_id) values ($1) returning id`
+
+	var cartID int
+	row := m.DB.QueryRowContext(ctx, query, userID)
+	err := row.Scan(
+		&cartID,
+	)
+	if err != nil {
+		return 0, err
+	}
+
+	return cartID, nil
+}
+
+// GetUserCartIDByEmail return user cart_id.
+func (m *PostgresDBRepo) GetUserCartIDByEmail(email string) (int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `select (c.id) from public.cart c inner join public.user u on (c.user_id = u.id) where email = $1`
+
+	var cartID int
+	row := m.DB.QueryRowContext(ctx, query, email)
+	err := row.Scan(
+		&cartID,
+	)
+	if err != nil {
+		return 0, err
+	}
+
+	return cartID, nil
 }

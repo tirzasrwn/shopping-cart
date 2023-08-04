@@ -10,7 +10,8 @@ type DatabaseRepo interface {
 	Connection() *sql.DB
 	// user
 	GetUserByEmail(email string) (*models.User, error)
-	InsertUser(user *models.User) error
+	InsertUser(user *models.User) (int, error)
+	CreateCartForNewUser(userID int) (int, error)
 	// category
 	GetCategories() ([]*models.Category, error)
 	// product

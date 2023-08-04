@@ -15,6 +15,7 @@ func InitializeRouter() (router *gin.Engine) {
 	v1route := router.Group("/v1")
 	{
 		v1route.GET("/user", v1.GetUserByEmail)
+		v1route.POST("/user", v1.PostUser)
 	}
 
 	return router

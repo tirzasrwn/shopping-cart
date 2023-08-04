@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/tirzasrwn/shopping-cart/internal/handlers"
+	"github.com/tirzasrwn/shopping-cart/internal/models"
 	"github.com/tirzasrwn/shopping-cart/internal/utils"
 )
 
@@ -25,4 +26,33 @@ func GetUserByEmail(c *gin.Context) {
 		return
 	}
 	utils.WriteJSON(c, http.StatusOK, user)
+}
+
+// Post User
+//
+//	@Tags			User
+//	@Summary		Post new user
+//	@Description	This is API to post new user
+//	@Param			email		query	string	true	"email"
+//	@Param			password	query	string	true	"password"
+//	@Produce		json
+//	@Router			/user [post]
+func PostUser(c *gin.Context) {
+	email := c.Query("email")
+	password := c.Query("password")
+	var user = models.User{
+		Email:    email,
+		Password: password,
+	}
+	err := handlers.Handlers.InsertUser(&user)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
+	data := utils.JSONResponse{
+		Error:   false,
+		Message: "Success create user!",
+		Data:    nil,
+	}
+	utils.WriteJSON(c, http.StatusOK, data)
 }

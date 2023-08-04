@@ -9,3 +9,11 @@ func (m *module) GetUserByEmail(email string) (user *models.User, err error) {
 	}
 	return
 }
+
+func (m *module) InsertUser(user *models.User) error {
+	err := m.db.dbrepo.InsertUser(user)
+	if err != nil {
+		return err
+	}
+	return nil
+}

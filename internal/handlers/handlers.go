@@ -16,6 +16,7 @@ import (
 
 type HandlerFunc interface {
 	GetUserByEmail(email string) (*models.User, error)
+	InsertUser(user *models.User) error
 }
 
 var Handlers HandlerFunc

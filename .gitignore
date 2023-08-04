@@ -19,3 +19,7 @@
 
 # Go workspace file
 go.work
+
+postgres
+todo.md
+docs/*

@@ -8,6 +8,14 @@ import (
 	"github.com/tirzasrwn/shopping-cart/internal/utils"
 )
 
+// Get User By Email
+//
+//	@Tags			User
+//	@Summary		Get user by email
+//	@Description	This is API to get user by email
+//	@Param			email	query	string	true	"email"
+//	@Produce		json
+//	@Router			/user [get]
 func GetUserByEmail(c *gin.Context) {
 	var err error
 	email := c.Query("email")

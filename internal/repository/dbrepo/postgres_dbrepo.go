@@ -28,7 +28,7 @@ func (m *PostgresDBRepo) GetUserByEmail(email string) (*models.User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `select id, email, password, created_at, updated_at from users where email = $1`
+	query := `select id, email, password, created_at, updated_at from public.user where email = $1`
 
 	var user models.User
 	row := m.DB.QueryRowContext(ctx, query, email)

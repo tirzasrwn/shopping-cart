@@ -6,6 +6,38 @@ import (
 	"github.com/tirzasrwn/shopping-cart/internal/models"
 )
 
+func (m *PostgresDBRepo) GetProducts() ([]*models.Product, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `select id, category_id, name, description, price, created_at, updated_at from public.product`
+
+	var products []*models.Product
+	rows, err := m.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		var product models.Product
+		err := rows.Scan(
+			&product.ID,
+			&product.CategoryID,
+			&product.Name,
+			&product.Description,
+			&product.Price,
+			&product.CreatedAt,
+			&product.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		products = append(products, &product)
+	}
+
+	return products, nil
+}
+
 func (m *PostgresDBRepo) GetProductByCategory(id int) ([]*models.Product, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()

@@ -22,6 +22,8 @@ type HandlerFunc interface {
 	GetCategory() ([]*models.Category, error)
 	// product
 	GetProductByCategory(id int) ([]*models.Product, error)
+	// order
+	InsertOrder(cardID int, productID int, quantity int) (int, error)
 }
 
 var Handlers HandlerFunc

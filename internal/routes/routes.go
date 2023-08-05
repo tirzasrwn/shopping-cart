@@ -18,6 +18,7 @@ func InitializeRouter() (router *gin.Engine) {
 		v1route.POST("/user", v1.PostUser)
 		v1route.GET("/category", v1.GetCategories)
 		v1route.GET("/product", v1.GetProductByCategoryID)
+		v1route.POST("/order", v1.InsertOrder)
 	}
 
 	return router

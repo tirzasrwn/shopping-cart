@@ -12,6 +12,11 @@ import (
 	"github.com/tirzasrwn/shopping-cart/internal/utils"
 )
 
+type CredentialPayload struct {
+	Email    string `json:"email" example:"user1@example.com"`
+	Password string `json:"password" example:"user1"`
+}
+
 func getUserEmailFromContex(c *gin.Context) (string, error) {
 	_, claims, _ := middleware.AdminAuth.GetTokenFromHeaderAndVerify(c)
 	userEmail := fmt.Sprintf("%v", claims["email"])
@@ -49,18 +54,21 @@ func GetUserInformation(c *gin.Context) {
 //	@Tags			public
 //	@Summary		create new user
 //	@Description	this is API to create new user
-//	@Param			email		query	string	true	"email"
-//	@Param			password	query	string	true	"password"
+//	@Param			payload	body	CredentialPayload	true	"body payload"
 //	@Produce		json
 //	@Router			/user [post]
 func PostUser(c *gin.Context) {
-	email := c.Query("email")
-	password := c.Query("password")
-	var user = models.User{
-		Email:    email,
-		Password: password,
+	var requestPayload CredentialPayload
+	err := c.ShouldBind(&requestPayload)
+	if err != nil {
+		utils.ErrorJSON(c, err, http.StatusBadRequest)
+		return
 	}
-	_, err := handlers.Handlers.InsertUser(&user)
+	var user = models.User{
+		Email:    requestPayload.Email,
+		Password: requestPayload.Password,
+	}
+	_, err = handlers.Handlers.InsertUser(&user)
 	if err != nil {
 		utils.ErrorJSON(c, err)
 		return
@@ -119,21 +127,16 @@ func GetUserPayment(c *gin.Context) {
 	utils.WriteJSON(c, http.StatusOK, payment)
 }
 
-type AuthenticatePayload struct {
-	Email    string `json:"email" example:"user1@example.com"`
-	Password string `json:"password" example:"user1"`
-}
-
 // Login
 //
 //	@Tags			public
 //	@Summary		login
 //	@Description	this is api to authenticate user
-//	@Param			payload	body	AuthenticatePayload	true	"body payload"
+//	@Param			payload	body	CredentialPayload	true	"body payload"
 //	@Produce		json
 //	@Router			/login [post]
 func Authenticate(c *gin.Context) {
-	var requestPayload AuthenticatePayload
+	var requestPayload CredentialPayload
 	err := c.ShouldBind(&requestPayload)
 	if err != nil {
 		utils.ErrorJSON(c, err, http.StatusBadRequest)

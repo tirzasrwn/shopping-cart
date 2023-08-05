@@ -22,7 +22,7 @@ func InitializeRouter() (router *gin.Engine) {
 		user := v1route.Group("/user")
 		user.Use(middleware.AdminAuth.AuthRequest())
 		{
-			user.GET("", v1.GetUserByEmail)
+			user.GET("", v1.GetUserInformation)
 			user.GET("/order", v1.GetUserOrder)
 			user.POST("/order", v1.InsertOrder)
 			user.DELETE("/order/:order_id", v1.DeleteOrder)

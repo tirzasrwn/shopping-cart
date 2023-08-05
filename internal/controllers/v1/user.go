@@ -25,14 +25,17 @@ func getUserEmailFromContex(c *gin.Context) (string, error) {
 //
 //	@Security		UserAuth
 //	@Tags			user
-//	@Summary		get user by email
-//	@Description	this is API to get user by email
-//	@Param			email	query	string	true	"email"
+//	@Summary		get user information
+//	@Description	this is API to get user information
 //	@Produce		json
 //	@Router			/user [get]
-func GetUserByEmail(c *gin.Context) {
+func GetUserInformation(c *gin.Context) {
 	var err error
-	email := c.Query("email")
+	email, err := getUserEmailFromContex(c)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
 	user, err := handlers.Handlers.GetUserByEmail(email)
 	if err != nil {
 		utils.ErrorJSON(c, err)
@@ -70,18 +73,21 @@ func PostUser(c *gin.Context) {
 	utils.WriteJSON(c, http.StatusOK, data)
 }
 
-// get user order by email
+// get user order
 //
 //	@Security		UserAuth
 //	@Tags			user
-//	@Summary		get user order by email
-//	@Description	this api is to get user order by email
-//	@Param			email	query	string	true	"email"
+//	@Summary		get user order
+//	@Description	this api is to get user order
 //	@Produce		json
 //	@Router			/user/order [get]
 func GetUserOrder(c *gin.Context) {
 	var err error
-	email := c.Query("email")
+	email, err := getUserEmailFromContex(c)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
 	products, err := handlers.Handlers.GetUserOrder(email)
 	if err != nil {
 		utils.ErrorJSON(c, err)
@@ -90,18 +96,21 @@ func GetUserOrder(c *gin.Context) {
 	utils.WriteJSON(c, http.StatusOK, products)
 }
 
-// get user payment by email
+// get user payment
 //
 //	@Security		UserAuth
 //	@Tags			user
-//	@Summary		get user payment by email
-//	@Description	this api is to get user payment by email
-//	@Param			email	query	string	true	"email"	default(user1@example.com)
+//	@Summary		get user payment
+//	@Description	this api is to get user payment
 //	@Produce		json
 //	@Router			/user/payment [get]
 func GetUserPayment(c *gin.Context) {
 	var err error
-	email := c.Query("email")
+	email, err := getUserEmailFromContex(c)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
 	payment, err := handlers.Handlers.GetUserPayment(email)
 	if err != nil {
 		utils.ErrorJSON(c, err)

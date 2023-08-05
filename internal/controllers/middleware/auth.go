@@ -35,10 +35,6 @@ type TokenPairs struct {
 	RefreshToken string `json:"-"`
 }
 
-type Claims struct {
-	jwt.RegisteredClaims
-}
-
 var AdminAuth *Auth
 
 func InitializeAuthenticationMiddleware(app *configs.Config) {
@@ -129,7 +125,7 @@ func (j *Auth) GetExpiredRefreshCookie() *http.Cookie {
 	}
 }
 
-func (j *Auth) GetTokenFromHeaderAndVerify(c *gin.Context) (string, *Claims, error) {
+func (j *Auth) GetTokenFromHeaderAndVerify(c *gin.Context) (string, jwt.MapClaims, error) {
 	c.Writer.Header().Add("Vary", "Authorization")
 
 	// get auth header
@@ -154,7 +150,7 @@ func (j *Auth) GetTokenFromHeaderAndVerify(c *gin.Context) (string, *Claims, err
 	token := headerParts[1]
 
 	// declare an empty claims
-	claims := &Claims{}
+	claims := jwt.MapClaims{}
 
 	// parse the token
 	_, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
@@ -171,7 +167,11 @@ func (j *Auth) GetTokenFromHeaderAndVerify(c *gin.Context) (string, *Claims, err
 		return "", nil, err
 	}
 
-	if claims.Issuer != j.Issuer {
+	// for key, val := range claims {
+	// 	fmt.Printf("Key: %v, value: %v\n", key, val)
+	// }
+
+	if claims["iss"] != j.Issuer {
 		return "", nil, errors.New("invalid issuer")
 	}
 

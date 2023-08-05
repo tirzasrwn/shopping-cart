@@ -2,6 +2,7 @@ package v1
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,6 +11,15 @@ import (
 	"github.com/tirzasrwn/shopping-cart/internal/models"
 	"github.com/tirzasrwn/shopping-cart/internal/utils"
 )
+
+func getUserEmailFromContex(c *gin.Context) (string, error) {
+	_, claims, _ := middleware.AdminAuth.GetTokenFromHeaderAndVerify(c)
+	userEmail := fmt.Sprintf("%v", claims["email"])
+	if userEmail == "" {
+		return "", errors.New("user email in token not found")
+	}
+	return userEmail, nil
+}
 
 // get user information
 //

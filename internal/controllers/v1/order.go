@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -70,6 +71,44 @@ func DeleteOrder(c *gin.Context) {
 	data := utils.JSONResponse{
 		Error:   false,
 		Message: "success delete order",
+		Data:    nil,
+	}
+	utils.WriteJSON(c, http.StatusOK, data)
+}
+
+type CheckoutOrderPayload struct {
+	Money float64 `json:"money" example:"100000"`
+}
+
+// checkout order
+//
+//	@Security		UserAuth
+//	@Tags			user
+//	@Summary		checkout order for user
+//	@Description	this api to post new order or update the quantity
+//	@Param			payload	body	CheckoutOrderPayload	true	"body payload"
+//	@Produce		json
+//	@Router			/user/checkout [post]
+func Checkout(c *gin.Context) {
+	var request CheckoutOrderPayload
+	err := c.ShouldBind(&request)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
+	userEmail, err := getUserEmailFromContex(c)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
+	changeMoney, err := handlers.Handlers.CheckoutOrder(request.Money, userEmail)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
+	data := &utils.JSONResponse{
+		Error:   false,
+		Message: fmt.Sprintf("success to checkout, your change money is %.2f", changeMoney),
 		Data:    nil,
 	}
 	utils.WriteJSON(c, http.StatusOK, data)

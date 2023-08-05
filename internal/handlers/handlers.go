@@ -27,7 +27,7 @@ type HandlerFunc interface {
 	// order
 	InsertOrder(cardID int, productID int, quantity int) (int, error)
 	DeleteOrder(orderID int) error
-	// payment
+	CheckoutOrder(money float64, email string) (float64, error)
 }
 
 var Handlers HandlerFunc

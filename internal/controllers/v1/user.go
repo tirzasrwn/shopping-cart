@@ -79,13 +79,13 @@ func GetUserOrder(c *gin.Context) {
 }
 
 type AuthenticatePayload struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" example:"user1@example.com"`
+	Password string `json:"password" example:"user1"`
 }
 
 // Login
 //
-//	@Tags			user
+//	@Tags			public
 //	@Summary		login
 //	@Description	this is api to authenticate user
 //	@Param			payload	body	AuthenticatePayload	true	"body payload"

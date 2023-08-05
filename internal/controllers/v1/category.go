@@ -8,9 +8,9 @@ import (
 	"github.com/tirzasrwn/shopping-cart/internal/utils"
 )
 
-// get products
+// get category
 //
-//	@Tags			category
+//	@Tags			public
 //	@Summary		get category
 //	@Description	this is api to get category
 //	@Produce		json

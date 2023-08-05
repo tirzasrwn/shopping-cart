@@ -18,3 +18,11 @@ func (m *module) InsertOrder(cardID int, productID int, quantity int) (int, erro
 	}
 	return id, nil
 }
+
+func (m *module) DeleteOrder(orderID int) error {
+	err := m.db.dbrepo.DeleteOder(orderID)
+	if err != nil {
+		return err
+	}
+	return nil
+}

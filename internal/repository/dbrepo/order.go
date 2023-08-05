@@ -62,11 +62,12 @@ func (m *PostgresDBRepo) UpdateQuantity(cartID int, productID int, quantityToAdd
 }
 
 // GetOrderByUserEmail returns products in specific user cart.
-func (m *PostgresDBRepo) GetOrderByUserEmail(email string) ([]*models.Product, error) {
+func (m *PostgresDBRepo) GetOrderByUserEmail(email string) ([]*models.ProductOrder, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `select p.id, p.category_id, p.name, p.description, p.price, p.created_at, p.updated_at
+	query := `select p.id, p.category_id, p.name, p.description, p.price,
+  o.id, o.quantity, o.created_at, o.updated_at
   from public.order o inner join product p on (o.product_id = p.id) 
   where cart_id in (
     select id from cart where id in (
@@ -74,19 +75,21 @@ func (m *PostgresDBRepo) GetOrderByUserEmail(email string) ([]*models.Product, e
     )
   )`
 
-	var products []*models.Product
+	var products []*models.ProductOrder
 	rows, err := m.DB.QueryContext(ctx, query, email)
 	if err != nil {
 		return nil, err
 	}
 	for rows.Next() {
-		var product models.Product
+		var product models.ProductOrder
 		err := rows.Scan(
 			&product.ID,
 			&product.CategoryID,
 			&product.Name,
 			&product.Description,
 			&product.Price,
+			&product.OrderID,
+			&product.Quantity,
 			&product.CreatedAt,
 			&product.UpdatedAt,
 		)
@@ -96,4 +99,20 @@ func (m *PostgresDBRepo) GetOrderByUserEmail(email string) ([]*models.Product, e
 		products = append(products, &product)
 	}
 	return products, nil
+}
+
+// DeleteOder deletes order with id.
+func (m *PostgresDBRepo) DeleteOder(orderID int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `delete from public.order where id = $1 returning id`
+
+	var returnID int
+	row := m.DB.QueryRowContext(ctx, query, orderID)
+	err := row.Scan(&returnID)
+	if err != nil {
+		return err
+	}
+	return nil
 }

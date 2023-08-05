@@ -20,5 +20,6 @@ type DatabaseRepo interface {
 	InsertOrder(cartID int, productID int, quantity int) (int, error)
 	CheckOrderExist(cartID int, productID int) (bool, error)
 	UpdateQuantity(cartID int, productID int, quantityToAdd int) (int, error)
-	GetOrderByUserEmail(email string) ([]*models.Product, error)
+	GetOrderByUserEmail(email string) ([]*models.ProductOrder, error)
+	DeleteOder(orderID int) error
 }

@@ -2,6 +2,7 @@ package v1
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tirzasrwn/shopping-cart/internal/handlers"
@@ -40,6 +41,34 @@ func InsertOrder(c *gin.Context) {
 		Error:   false,
 		Message: "success insert new order",
 		Data:    map[string]interface{}{"order_id": orderID},
+	}
+	utils.WriteJSON(c, http.StatusOK, data)
+}
+
+// delete order
+//
+//	@Tags			user
+//	@Summary		delete order by order id
+//	@Description	this api to delete order by order id
+//	@Param			order_id	path	int	true	"order id"
+//	@Produce		json
+//	@Router			/user/order/{order_id} [delete]
+func DeleteOrder(c *gin.Context) {
+	pathOrderID := c.Param("order_id")
+	orderID, err := strconv.Atoi(pathOrderID)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
+	err = handlers.Handlers.DeleteOrder(orderID)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
+	data := utils.JSONResponse{
+		Error:   false,
+		Message: "success delete order",
+		Data:    nil,
 	}
 	utils.WriteJSON(c, http.StatusOK, data)
 }

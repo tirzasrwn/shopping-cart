@@ -3,6 +3,8 @@ package dbrepo
 import (
 	"context"
 	"time"
+
+	"github.com/tirzasrwn/shopping-cart/internal/models"
 )
 
 // InsertOrder creates new order.
@@ -57,4 +59,41 @@ func (m *PostgresDBRepo) UpdateQuantity(cartID int, productID int, quantityToAdd
 	}
 
 	return orderID, nil
+}
+
+// GetOrderByUserEmail returns products in specific user cart.
+func (m *PostgresDBRepo) GetOrderByUserEmail(email string) ([]*models.Product, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `select p.id, p.category_id, p.name, p.description, p.price, p.created_at, p.updated_at
+  from public.order o inner join product p on (o.product_id = p.id) 
+  where cart_id in (
+    select id from cart where id in (
+      select id from public.user where email = $1
+    )
+  )`
+
+	var products []*models.Product
+	rows, err := m.DB.QueryContext(ctx, query, email)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		var product models.Product
+		err := rows.Scan(
+			&product.ID,
+			&product.CategoryID,
+			&product.Name,
+			&product.Description,
+			&product.Price,
+			&product.CreatedAt,
+			&product.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		products = append(products, &product)
+	}
+	return products, nil
 }

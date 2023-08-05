@@ -56,3 +56,22 @@ func PostUser(c *gin.Context) {
 	}
 	utils.WriteJSON(c, http.StatusOK, data)
 }
+
+// get user order by email
+//
+//	@Tags			user
+//	@Summary		get user order by email
+//	@Description	this api is to get user order by email
+//	@Param			email	query	string	true	"email"
+//	@Produce		json
+//	@Router			/user/order [get]
+func GetUserOrder(c *gin.Context) {
+	var err error
+	email := c.Query("email")
+	products, err := handlers.Handlers.GetUserOrder(email)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
+	utils.WriteJSON(c, http.StatusOK, products)
+}

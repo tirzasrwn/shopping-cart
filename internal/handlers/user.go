@@ -21,3 +21,11 @@ func (m *module) InsertUser(user *models.User) (int, error) {
 	}
 	return userID, nil
 }
+
+func (m *module) GetUserOrder(email string) ([]*models.Product, error) {
+	products, err := m.db.dbrepo.GetOrderByUserEmail(email)
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
+}

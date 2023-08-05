@@ -9,11 +9,11 @@ import (
 	"github.com/tirzasrwn/shopping-cart/internal/utils"
 )
 
-// Get Categories
+// get categories
 //
-//	@Tags			Product
-//	@Summary		Get prouct by category_id
-//	@Description	This is API to get product by category_id
+//	@Tags			product
+//	@Summary		get prouct by category_id
+//	@Description	this is api to get product by category_id
 //	@Param			category_id	query	int	true	"category_id"
 //	@Produce		json
 //	@Router			/product [get]

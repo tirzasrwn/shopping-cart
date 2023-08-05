@@ -9,11 +9,11 @@ import (
 	"github.com/tirzasrwn/shopping-cart/internal/utils"
 )
 
-// Get User By Email
+// get user information
 //
-//	@Tags			User
-//	@Summary		Get user by email
-//	@Description	This is API to get user by email
+//	@Tags			user
+//	@Summary		get user by email
+//	@Description	this is API to get user by email
 //	@Param			email	query	string	true	"email"
 //	@Produce		json
 //	@Router			/user [get]
@@ -28,11 +28,11 @@ func GetUserByEmail(c *gin.Context) {
 	utils.WriteJSON(c, http.StatusOK, user)
 }
 
-// Post User
+// create new user
 //
-//	@Tags			User
-//	@Summary		Create new user
-//	@Description	This is API to create new user
+//	@Tags			user
+//	@Summary		create new user
+//	@Description	this is API to create new user
 //	@Param			email		query	string	true	"email"
 //	@Param			password	query	string	true	"password"
 //	@Produce		json

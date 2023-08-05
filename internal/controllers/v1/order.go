@@ -14,7 +14,7 @@ type InsertOrderPayload struct {
 	Quantity  int `json:"quantity" example:"1"`
 }
 
-// post order
+// post or update order
 //
 //	@Tags			order
 //	@Summary		post new order or update the quantity

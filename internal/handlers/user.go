@@ -29,3 +29,11 @@ func (m *module) GetUserOrder(email string) ([]*models.ProductOrder, error) {
 	}
 	return products, nil
 }
+
+func (m *module) GetUserPayment(email string) ([]*models.ProductPayment, error) {
+	payment, err := m.db.dbrepo.GetPaymentByUserEmail(email)
+	if err != nil {
+		return nil, err
+	}
+	return payment, nil
+}

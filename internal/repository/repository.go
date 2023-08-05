@@ -22,4 +22,7 @@ type DatabaseRepo interface {
 	UpdateQuantity(cartID int, productID int, quantityToAdd int) (int, error)
 	GetOrderByUserEmail(email string) ([]*models.ProductOrder, error)
 	DeleteOder(orderID int) error
+	// payment
+	InsertSuccessPayment(userID int, productID int, quantity int) (int, error)
+	GetPaymentByUserEmail(email string) ([]*models.ProductPayment, error)
 }

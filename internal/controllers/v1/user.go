@@ -80,6 +80,26 @@ func GetUserOrder(c *gin.Context) {
 	utils.WriteJSON(c, http.StatusOK, products)
 }
 
+// get user payment by email
+//
+//	@Security		UserAuth
+//	@Tags			user
+//	@Summary		get user payment by email
+//	@Description	this api is to get user payment by email
+//	@Param			email	query	string	true	"email"	default(user1@example.com)
+//	@Produce		json
+//	@Router			/user/payment [get]
+func GetUserPayment(c *gin.Context) {
+	var err error
+	email := c.Query("email")
+	payment, err := handlers.Handlers.GetUserPayment(email)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
+	utils.WriteJSON(c, http.StatusOK, payment)
+}
+
 type AuthenticatePayload struct {
 	Email    string `json:"email" example:"user1@example.com"`
 	Password string `json:"password" example:"user1"`

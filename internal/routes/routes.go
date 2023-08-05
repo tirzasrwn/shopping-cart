@@ -26,6 +26,7 @@ func InitializeRouter() (router *gin.Engine) {
 			user.GET("/order", v1.GetUserOrder)
 			user.POST("/order", v1.InsertOrder)
 			user.DELETE("/order/:order_id", v1.DeleteOrder)
+			user.GET("/payment", v1.GetUserPayment)
 		}
 	}
 

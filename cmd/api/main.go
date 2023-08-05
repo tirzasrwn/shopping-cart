@@ -32,7 +32,7 @@ func init() {
 //	@contact.name	tirzasrwn
 //	@contact.email	tirzasrwn@gmail.com
 
-//	@securityDefinitions.apikey	AdminAuth
+//	@securityDefinitions.apikey	UserAuth
 //	@in							header
 //	@name						Authorization
 

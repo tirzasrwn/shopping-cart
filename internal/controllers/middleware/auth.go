@@ -26,14 +26,13 @@ type Auth struct {
 }
 
 type JwtUser struct {
-	ID        int    `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
+	ID    int    `json:"id"`
+	Email string `json:"email"`
 }
 
 type TokenPairs struct {
 	Token        string `json:"access_token"`
-	RefreshToken string `json:"refresh_token"`
+	RefreshToken string `json:"-"`
 }
 
 type Claims struct {
@@ -47,7 +46,7 @@ func InitializeAuthenticationMiddleware(app *configs.Config) {
 		Issuer:        app.JWTIssuer,
 		Audience:      app.JWTAudience,
 		Secret:        app.JWTSecret,
-		TokenExpiry:   time.Minute * 2,
+		TokenExpiry:   time.Minute * 15,
 		RefreshExpiry: time.Hour * 24,
 		CookiePath:    "/",
 		CookieName:    "refresh_token",
@@ -61,8 +60,8 @@ func (j *Auth) GenerateTokenPair(user *JwtUser) (TokenPairs, error) {
 
 	// Set the claims
 	claims := token.Claims.(jwt.MapClaims)
-	claims["name"] = fmt.Sprintf("%s %s", user.FirstName, user.LastName)
-	claims["sub"] = fmt.Sprint(user.ID)
+	claims["email"] = fmt.Sprintf("%s", user.Email)
+	claims["uid"] = fmt.Sprint(user.ID)
 	claims["aud"] = j.Audience
 	claims["iss"] = j.Issuer
 	claims["iat"] = time.Now().UTC().Unix()

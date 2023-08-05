@@ -29,3 +29,7 @@ func (u *User) PasswordMatches(plainText string) (bool, error) {
 
 	return true, nil
 }
+
+func (u *User) PasswordPlainMatches(plainText string) (bool, error) {
+	return u.Password == plainText, nil
+}

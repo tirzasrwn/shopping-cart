@@ -1,9 +1,11 @@
 package v1
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/tirzasrwn/shopping-cart/internal/controllers/middleware"
 	"github.com/tirzasrwn/shopping-cart/internal/handlers"
 	"github.com/tirzasrwn/shopping-cart/internal/models"
 	"github.com/tirzasrwn/shopping-cart/internal/utils"
@@ -74,4 +76,50 @@ func GetUserOrder(c *gin.Context) {
 		return
 	}
 	utils.WriteJSON(c, http.StatusOK, products)
+}
+
+type AuthenticatePayload struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+// Login
+//
+//	@Tags			user
+//	@Summary		login
+//	@Description	this is api to authenticate user
+//	@Param			payload	body	AuthenticatePayload	true	"body payload"
+//	@Produce		json
+//	@Router			/login [post]
+func Authenticate(c *gin.Context) {
+	var requestPayload AuthenticatePayload
+	err := c.ShouldBind(&requestPayload)
+	if err != nil {
+		utils.ErrorJSON(c, err, http.StatusBadRequest)
+		return
+	}
+	user, err := handlers.Handlers.GetUserByEmail(requestPayload.Email)
+	if err != nil {
+		utils.ErrorJSON(c, errors.New("invalid credentials"), http.StatusBadRequest)
+		return
+	}
+	valid, err := user.PasswordPlainMatches(requestPayload.Password)
+	if err != nil || !valid {
+		utils.ErrorJSON(c, errors.New("invalid credentials"), http.StatusBadRequest)
+		return
+	}
+	u := middleware.JwtUser{
+		ID:    user.ID,
+		Email: user.Email,
+	}
+	tokens, err := middleware.AdminAuth.GenerateTokenPair(&u)
+	if err != nil {
+		utils.ErrorJSON(c, err, http.StatusBadRequest)
+		return
+	}
+
+	refreshCookie := middleware.AdminAuth.GetRefreshCookie(tokens.RefreshToken)
+	http.SetCookie(c.Writer, refreshCookie)
+
+	utils.WriteJSON(c, http.StatusOK, tokens)
 }

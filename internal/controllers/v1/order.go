@@ -16,12 +16,12 @@ type InsertOrderPayload struct {
 
 // post or update order
 //
-//	@Tags			order
+//	@Tags			user
 //	@Summary		post new order or update the quantity
 //	@Description	this api to post new order or update the quantity
 //	@Param			payload	body	InsertOrderPayload	true	"body payload"
 //	@Produce		json
-//	@Router			/order [post]
+//	@Router			/user/order [post]
 func InsertOrder(c *gin.Context) {
 	var request InsertOrderPayload
 	err := c.ShouldBind(&request)

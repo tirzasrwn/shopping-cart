@@ -2,7 +2,7 @@ CREATE TABLE "order"(
   id serial PRIMARY KEY,
   cart_id INT,
   product_id INT,
-  quantity FLOAT,
+  quantity INT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_cart FOREIGN KEY(cart_id) REFERENCES "cart"(id) ON DELETE CASCADE,

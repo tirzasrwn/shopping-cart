@@ -13,6 +13,7 @@ import (
 
 // get user information
 //
+//	@Security		UserAuth
 //	@Tags			user
 //	@Summary		get user by email
 //	@Description	this is API to get user by email
@@ -32,7 +33,7 @@ func GetUserByEmail(c *gin.Context) {
 
 // create new user
 //
-//	@Tags			user
+//	@Tags			public
 //	@Summary		create new user
 //	@Description	this is API to create new user
 //	@Param			email		query	string	true	"email"
@@ -61,6 +62,7 @@ func PostUser(c *gin.Context) {
 
 // get user order by email
 //
+//	@Security		UserAuth
 //	@Tags			user
 //	@Summary		get user order by email
 //	@Description	this api is to get user order by email

@@ -17,6 +17,7 @@ type InsertOrderPayload struct {
 
 // post or update order
 //
+//	@Security		UserAuth
 //	@Tags			user
 //	@Summary		post new order or update the quantity
 //	@Description	this api to post new order or update the quantity
@@ -47,6 +48,7 @@ func InsertOrder(c *gin.Context) {
 
 // delete order
 //
+//	@Security		UserAuth
 //	@Tags			user
 //	@Summary		delete order by order id
 //	@Description	this api to delete order by order id

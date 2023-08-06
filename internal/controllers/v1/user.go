@@ -101,7 +101,16 @@ func GetUserOrder(c *gin.Context) {
 		utils.ErrorJSON(c, err)
 		return
 	}
-	utils.WriteJSON(c, http.StatusOK, products)
+	var totalPayment float64
+	for _, p := range products {
+		totalPayment = totalPayment + p.Price
+	}
+	data := utils.JSONResponse{
+		Error:   false,
+		Message: fmt.Sprintf("your total payment for checkout is %.2f", totalPayment),
+		Data:    products,
+	}
+	utils.WriteJSON(c, http.StatusOK, data)
 }
 
 // GetUserPayment godoc

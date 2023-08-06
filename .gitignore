@@ -22,4 +22,6 @@ go.work
 
 postgres
 todo.md
-docs/*
+docs.go
+swagger.json
+swagger.yaml

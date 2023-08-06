@@ -2,7 +2,7 @@
 
 ## About
 
-An shopping-cart API for study case using go, go-gin, swaggo, and postgresql. Main features for this study case are:
+A shopping-cart API for study case using go, go-gin, swaggo, and postgresql. Main features for this study case are:
 
 - User can view product list by product category
 - User can add product to shopping cart
@@ -19,6 +19,10 @@ An shopping-cart API for study case using go, go-gin, swaggo, and postgresql. Ma
 - JWT
 - Postgres
 - Database Migration
+
+## Entity Relationship Diagram (ERD)
+
+![shopping-cart-erd](./docs/erd.png)
 
 ## Requirement
 
@@ -48,8 +52,9 @@ make start
 ```
 
 - Running spesific docker image
-  There are two docker images, backend go and database postgresql.
-  You can run them separately.
+
+There are two docker images, backend go and database postgresql.
+You can run them separately.
 
 ```sh
 make docker_<service>_build

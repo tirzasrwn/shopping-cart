@@ -8,11 +8,11 @@ import (
 	"github.com/tirzasrwn/shopping-cart/internal/utils"
 )
 
-// get category
+// GetCategories godoc
 //
 //	@Tags			public
-//	@Summary		get category
-//	@Description	this is api to get category
+//	@Summary		get product category
+//	@Description	this is api to get product category
 //	@Produce		json
 //	@Router			/category [get]
 func GetCategories(c *gin.Context) {

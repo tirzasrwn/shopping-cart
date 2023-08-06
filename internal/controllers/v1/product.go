@@ -9,11 +9,11 @@ import (
 	"github.com/tirzasrwn/shopping-cart/internal/utils"
 )
 
-// get products
+// GetProducts godoc
 //
 //	@Tags			public
-//	@Summary		get proucts
-//	@Description	this is api to get products
+//	@Summary		get all prouct
+//	@Description	this is api to get all product
 //	@Produce		json
 //	@Router			/product [get]
 func GetProducts(c *gin.Context) {
@@ -25,11 +25,12 @@ func GetProducts(c *gin.Context) {
 	utils.WriteJSON(c, http.StatusOK, products)
 }
 
-// get product
+// GetProductByCategoryID godoc
 //
 //	@Tags			public
 //	@Summary		get prouct by category_id
 //	@Description	this is api to get product by category_id
+//	@Description	category_id can be found at /category
 //	@Param			category_id	path	int	true	"category_id"	default(1)
 //	@Produce		json
 //	@Router			/product/{category_id} [get]

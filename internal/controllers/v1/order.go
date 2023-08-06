@@ -16,12 +16,14 @@ type InsertOrderPayload struct {
 	Quantity  int `json:"quantity" example:"1"`
 }
 
-// post or update order
+// InsertOrder godoc
 //
 //	@Security		UserAuth
 //	@Tags			user
-//	@Summary		post new order or update the quantity
+//	@Summary		create new order or update the quantity
 //	@Description	this api to post new order or update the quantity
+//	@Description	cart_id can be found at /user
+//	@Description	prouduct_id can be found at /product
 //	@Param			payload	body	InsertOrderPayload	true	"body payload"
 //	@Produce		json
 //	@Router			/user/order [post]
@@ -47,12 +49,13 @@ func InsertOrder(c *gin.Context) {
 	utils.WriteJSON(c, http.StatusOK, data)
 }
 
-// delete order
+// DeleteOrder godoc
 //
 //	@Security		UserAuth
 //	@Tags			user
 //	@Summary		delete order by order id
-//	@Description	this api to delete order by order id
+//	@Description	this api to delete order by order_id
+//	@Description	order_id can be found at get /user/order
 //	@Param			order_id	path	int	true	"order id"
 //	@Produce		json
 //	@Router			/user/order/{order_id} [delete]
@@ -80,12 +83,13 @@ type CheckoutOrderPayload struct {
 	Money float64 `json:"money" example:"100000"`
 }
 
-// checkout order
+// Checkout godoc
 //
 //	@Security		UserAuth
 //	@Tags			user
-//	@Summary		checkout order for user
-//	@Description	this api to post new order or update the quantity
+//	@Summary		checkout all order in cart
+//	@Description	this api to checkout and make payment transactions
+//	@Description	total payment can be found at get /user/order
 //	@Param			payload	body	CheckoutOrderPayload	true	"body payload"
 //	@Produce		json
 //	@Router			/user/checkout [post]

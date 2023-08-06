@@ -26,12 +26,12 @@ func getUserEmailFromContex(c *gin.Context) (string, error) {
 	return userEmail, nil
 }
 
-// get user information
+// GetUserInformation godoc
 //
 //	@Security		UserAuth
 //	@Tags			user
-//	@Summary		get user information
-//	@Description	this is API to get user information
+//	@Summary		get all user information
+//	@Description	this is api to get all user information
 //	@Produce		json
 //	@Router			/user [get]
 func GetUserInformation(c *gin.Context) {
@@ -49,11 +49,11 @@ func GetUserInformation(c *gin.Context) {
 	utils.WriteJSON(c, http.StatusOK, user)
 }
 
-// create new user
+// PostUser godoc
 //
 //	@Tags			public
-//	@Summary		create new user
-//	@Description	this is API to create new user
+//	@Summary		register new user
+//	@Description	this is api to register new user
 //	@Param			payload	body	CredentialPayload	true	"body payload"
 //	@Produce		json
 //	@Router			/user [post]
@@ -81,7 +81,7 @@ func PostUser(c *gin.Context) {
 	utils.WriteJSON(c, http.StatusOK, data)
 }
 
-// get user order
+// GetUserOrder godoc
 //
 //	@Security		UserAuth
 //	@Tags			user
@@ -104,7 +104,7 @@ func GetUserOrder(c *gin.Context) {
 	utils.WriteJSON(c, http.StatusOK, products)
 }
 
-// get user payment
+// GetUserPayment godoc
 //
 //	@Security		UserAuth
 //	@Tags			user
@@ -127,11 +127,11 @@ func GetUserPayment(c *gin.Context) {
 	utils.WriteJSON(c, http.StatusOK, payment)
 }
 
-// Login
+// Authenticate godoc
 //
 //	@Tags			public
 //	@Summary		login
-//	@Description	this is api to authenticate user
+//	@Description	this is api to authenticate user then returns jwt token
 //	@Param			payload	body	CredentialPayload	true	"body payload"
 //	@Produce		json
 //	@Router			/login [post]

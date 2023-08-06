@@ -11,7 +11,7 @@ import (
 )
 
 type InsertOrderPayload struct {
-	CardID    int `json:"card_id" example:"1"`
+	CartID    int `json:"cart_id" example:"1"`
 	ProductID int `json:"product_id" example:"5"`
 	Quantity  int `json:"quantity" example:"1"`
 }
@@ -35,7 +35,7 @@ func InsertOrder(c *gin.Context) {
 		return
 	}
 
-	orderID, err := handlers.Handlers.InsertOrder(request.CardID, request.ProductID, request.Quantity)
+	orderID, err := handlers.Handlers.InsertOrder(request.CartID, request.ProductID, request.Quantity)
 	if err != nil {
 		utils.ErrorJSON(c, err)
 		return

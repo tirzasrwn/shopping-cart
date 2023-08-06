@@ -25,7 +25,7 @@ func (m *PostgresDBRepo) InsertOrder(cartID int, productID int, quantity int) (i
 	return orderID, nil
 }
 
-// CheckOrderExist checks order exist based on card id and product id.
+// CheckOrderExist checks order exist based on cart id and product id.
 func (m *PostgresDBRepo) CheckOrderExist(cartID int, productID int) (bool, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()

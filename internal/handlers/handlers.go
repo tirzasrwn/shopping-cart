@@ -26,7 +26,7 @@ type HandlerFunc interface {
 	GetProducts() ([]*models.Product, error)
 	GetProductByCategory(id int) ([]*models.Product, error)
 	// order
-	InsertOrder(cardID int, productID int, quantity int) (int, error)
+	InsertOrder(cartID int, productID int, quantity int) (int, error)
 	DeleteOrder(orderID int) error
 	CheckoutOrder(money float64, email string) (float64, error)
 }

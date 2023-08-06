@@ -60,7 +60,8 @@ func (m *module) CheckoutOrder(money float64, email string) (float64, error) {
 	// Check the payment.
 	var changeMoney float64
 	if total > money {
-		return 0, fmt.Errorf("insufficient of money, total price is %f", total)
+		moneyNeed := total - money
+		return 0, fmt.Errorf("insufficient of money, total price is %.2f, you need %.2f more", total, moneyNeed)
 	}
 	changeMoney = money - total
 	// Move order to payment if success and return change money.

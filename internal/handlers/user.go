@@ -63,7 +63,7 @@ func (m *module) CheckoutOrder(money float64, email string) (float64, error) {
 	// Count the total price.
 	var total float64
 	for _, p := range products {
-		total = total + p.Price
+		total = total + (float64(p.Quantity) * p.Price)
 	}
 	// Check the payment.
 	var changeMoney float64

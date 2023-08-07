@@ -118,9 +118,18 @@ func GetUserOrder(c *gin.Context) {
 		utils.ErrorJSON(c, err)
 		return
 	}
+	if products == nil {
+		data := utils.JSONResponse{
+			Error:   false,
+			Message: "your cart is empty",
+			Data:    nil,
+		}
+		utils.WriteJSON(c, http.StatusOK, data)
+		return
+	}
 	var totalPayment float64
 	for _, p := range products {
-		totalPayment = totalPayment + p.Price
+		totalPayment = totalPayment + (float64(p.Quantity) * p.Price)
 	}
 	data := utils.JSONResponse{
 		Error:   false,

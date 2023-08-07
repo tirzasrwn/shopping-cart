@@ -88,23 +88,23 @@ Swagger API documentaiton can be found at [http://localhost:4000/swagger/index.h
 ### Feature and route corelations
 
 - User can view product list by product category
-  1. use /product/{category_id} route
-  2. category_id can be found at /category
+  - use /product/{category_id} route
+  - category_id can be found at /category
 - User can add product to shopping cart
-  1. login using /login
-  2. use post /user/order to create new order or add the quantity
-  3. cart_id can be found at /user. prouduct_id can be found at /product
+  - login using /login
+  - use post /user/order to create new order or add the quantity
+  - cart_id can be found at /user. prouduct_id can be found at /product
 - User can see list of products that have been added to the shopping cart
-  1. login
-  2. user get /user/order
+  - login
+  - user get /user/order
 - User can delete product list in shopping cart
-  1. login
-  2. use /user/order/{order_id} to delete
-  3. order_id can be found at get /user/order
+  - login
+  - use /user/order/{order_id} to delete
+  - order_id can be found at get /user/order
 - User can checkout and make payment transactions
-  1. login
-  2. user /user/payment to checkout
-  3. total payment can be found at get /user/order
+  - login
+  - user /user/payment to checkout
+  - total payment can be found at get /user/order
 - Login and register user
-  1. use /register to create or register new user
-  2. you need to pass new email and password
+  - use /register to create or register new user
+  - you need to pass new email and password

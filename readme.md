@@ -134,3 +134,7 @@ Swagger API documentaiton can be found at [http://localhost:4000/swagger/index.h
   password: postgres
   db name: shopping-cart
   ```
+
+## Database Migration
+
+If you want to do a database migration for development, read [this documentation](./internal/migration/readme.md).

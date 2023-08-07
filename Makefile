@@ -26,7 +26,7 @@ docker_db_build:
 docker_db_start: docker_net_start
 	docker run --hostname shopping-cart-postgres --network=shopping-cart --restart unless-stopped --name shopping-cart-postgres -p 5432:5432 -d shopping-cart-postgres
 	# Use this command if you want to save the db data.
-	# docker run --hostname shopping-cart-postgres --network=shopping-cart --restart unless-stopped --name shopping-cart-postgres -p 5432:5432 -v ./db/data/postgres/:/var/lib/postgresql/data -d shopping-cart-postgres
+	# docker run --hostname shopping-cart-postgres --network=shopping-cart --restart unless-stopped --name shopping-cart-postgres -p 5432:5432 -v ./db/data/.postgres/:/var/lib/postgresql/data -d shopping-cart-postgres
 docker_db_stop:
 	- docker stop shopping-cart-postgres
 	- docker rm shopping-cart-postgres

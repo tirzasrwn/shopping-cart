@@ -14,7 +14,7 @@ services:
       mode: replicated
       replicas: 1
     volumes:
-      - ./db/data/postgres/:/var/lib/postgresql/data
+      - ./db/data/.postgres/:/var/lib/postgresql/data
   backend:
     container_name: shopping-cart-backend
     hostname: shopping-cart-backend

@@ -56,7 +56,7 @@ func InsertOrder(c *gin.Context) {
 //	@Summary		delete order by order id
 //	@Description	this api to delete order by order_id
 //	@Description	order_id can be found at get /user/order
-//	@Param			order_id	path	int	true	"order id"
+//	@Param			order_id	path	int	true	"order id" default(1)
 //	@Produce		json
 //	@Router			/user/order/{order_id} [delete]
 func DeleteOrder(c *gin.Context) {

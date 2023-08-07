@@ -62,3 +62,49 @@ make docker_<service>_start
 make docker_<service>_stop
 # where <service> is db for database and be for backend
 ```
+
+## API Routes
+
+![swagger](./docs/swagger.pgn)
+
+This API documentaiton using Swagger API documentation. Here are all the routes:
+
+| route                  | method | description                                                                                                            |
+| ---------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------- |
+| /category              | get    | this is api to get product category                                                                                    |
+| /login                 | post   | this is api to authenticate user then returns jwt token                                                                |
+| /product               | get    | this is api to get all product                                                                                         |
+| /product/{category_id} | get    | this is api to get product by category_id. category_id can be found at /category                                       |
+| /register              | post   | this is api to register new user                                                                                       |
+| /user                  | get    | this is api to get all user information                                                                                |
+| /user/checkout         | post   | this api is to checkout and make payment transactions. total payment can be found at get /user/order                   |
+| /user/order            | get    | this api is to get user order                                                                                          |
+| /user/order            | post   | this api to post new order or update the quantity. cart_id can be found at /user. prouduct_id can be found at /product |
+| /user/order/{order_id} | delete | this api to delete order by order_id. order_id can be found at get /user/order                                         |
+| /user/payment          | get    | this api is to get user payment                                                                                        |
+
+Swagger API documentaiton can be found at [http://localhost:4000/swagger/index.html](http://localhost:4000/swagger/index.html).
+
+### Feature and route corelations
+
+- User can view product list by product category
+  1. use /product/{category_id} route
+  2. category_id can be found at /category
+- User can add product to shopping cart
+  1. login using /login
+  2. use post /user/order to create new order or add the quantity
+  3. cart_id can be found at /user. prouduct_id can be found at /product
+- User can see list of products that have been added to the shopping cart
+  1. login
+  2. user get /user/order
+- User can delete product list in shopping cart
+  1. login
+  2. use /user/order/{order_id} to delete
+  3. order_id can be found at get /user/order
+- User can checkout and make payment transactions
+  1. login
+  2. user /user/payment to checkout
+  3. total payment can be found at get /user/order
+- Login and register user
+  1. use /register to create or register new user
+  2. you need to pass new email and password

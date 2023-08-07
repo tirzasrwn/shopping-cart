@@ -18,7 +18,7 @@ func InitializeRouter() (router *gin.Engine) {
 		v1route.GET("/category", v1.GetCategories)
 		v1route.GET("/product", v1.GetProducts)
 		v1route.GET("/product/:category_id", v1.GetProductByCategoryID)
-		v1route.POST("/user", v1.PostUser)
+		v1route.POST("/register", v1.PostUser)
 
 		user := v1route.Group("/user")
 		user.Use(middleware.AdminAuth.AuthRequest())

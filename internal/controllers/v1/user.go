@@ -73,7 +73,7 @@ func GetUserInformation(c *gin.Context) {
 //	@Description	this is api to register new user
 //	@Param			payload	body	CredentialPayload	true	"body payload"
 //	@Produce		json
-//	@Router			/user [post]
+//	@Router			/register [post]
 func PostUser(c *gin.Context) {
 	var requestPayload CredentialPayload
 	err := c.ShouldBind(&requestPayload)
@@ -92,7 +92,7 @@ func PostUser(c *gin.Context) {
 	}
 	data := utils.JSONResponse{
 		Error:   false,
-		Message: "Success create user!",
+		Message: "success create user",
 		Data:    nil,
 	}
 	utils.WriteJSON(c, http.StatusOK, data)

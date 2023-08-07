@@ -65,7 +65,7 @@ make docker_<service>_stop
 
 ## API Routes
 
-![swagger](./docs/swagger.pgn)
+![swagger](./docs/swagger.png)
 
 This API documentaiton using Swagger API documentation. Here are all the routes:
 

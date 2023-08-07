@@ -145,12 +145,19 @@ func GetUserPayment(c *gin.Context) {
 		utils.ErrorJSON(c, err)
 		return
 	}
-	payment, err := handlers.Handlers.GetUserPayment(email)
+	payments, err := handlers.Handlers.GetUserPayment(email)
 	if err != nil {
 		utils.ErrorJSON(c, err)
 		return
 	}
-	utils.WriteJSON(c, http.StatusOK, payment)
+	data := utils.JSONResponse{
+		Error:   false,
+		Message: "success get user payment history",
+		Data: map[string]interface{}{
+			"payment": payments,
+		},
+	}
+	utils.WriteJSON(c, http.StatusOK, data)
 }
 
 // Authenticate godoc
@@ -190,6 +197,11 @@ func Authenticate(c *gin.Context) {
 
 	refreshCookie := middleware.AdminAuth.GetRefreshCookie(tokens.RefreshToken)
 	http.SetCookie(c.Writer, refreshCookie)
+	data := utils.JSONResponse{
+		Error:   false,
+		Message: "success to login",
+		Data:    tokens,
+	}
 
-	utils.WriteJSON(c, http.StatusOK, tokens)
+	utils.WriteJSON(c, http.StatusOK, data)
 }

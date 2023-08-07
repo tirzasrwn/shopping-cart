@@ -21,5 +21,12 @@ func GetCategories(c *gin.Context) {
 		utils.ErrorJSON(c, err)
 		return
 	}
-	utils.WriteJSON(c, http.StatusOK, categories)
+	data := utils.JSONResponse{
+		Error:   false,
+		Message: "success get category",
+		Data: map[string]interface{}{
+			"category": categories,
+		},
+	}
+	utils.WriteJSON(c, http.StatusOK, data)
 }

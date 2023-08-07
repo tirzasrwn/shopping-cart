@@ -22,7 +22,14 @@ func GetProducts(c *gin.Context) {
 		utils.ErrorJSON(c, err)
 		return
 	}
-	utils.WriteJSON(c, http.StatusOK, products)
+	data := utils.JSONResponse{
+		Error:   false,
+		Message: "success get product",
+		Data: map[string]interface{}{
+			"product": products,
+		},
+	}
+	utils.WriteJSON(c, http.StatusOK, data)
 }
 
 // GetProductByCategoryID godoc
@@ -45,5 +52,12 @@ func GetProductByCategoryID(c *gin.Context) {
 		utils.ErrorJSON(c, err)
 		return
 	}
-	utils.WriteJSON(c, http.StatusOK, products)
+	data := utils.JSONResponse{
+		Error:   false,
+		Message: "success get product by category",
+		Data: map[string]interface{}{
+			"product": products,
+		},
+	}
+	utils.WriteJSON(c, http.StatusOK, data)
 }

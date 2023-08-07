@@ -2,7 +2,7 @@
 
 ## About
 
-A shopping-cart API for study case using go, go-gin, swaggo, and postgresql. Main features for this study case are:
+A shopping-cart API for case study using go, go-gin, swaggo, and postgresql. Main features for this case studiying are:
 
 - User can view product list by product category
 - User can add product to shopping cart
@@ -108,3 +108,29 @@ Swagger API documentaiton can be found at [http://localhost:4000/swagger/index.h
 - Login and register user
   - use /register to create or register new user
   - you need to pass new email and password
+
+## Service Details
+
+- Port
+
+| service name | port |
+| ------------ | ---- |
+| backend      | 4000 |
+| database     | 5432 |
+
+- Credential
+
+  - backend
+
+  ```sh
+  email: user1@example.com
+  password: user1
+  ```
+
+  - database
+
+  ```sh
+  username: postgres
+  password: postgres
+  db name: shopping cart
+  ```

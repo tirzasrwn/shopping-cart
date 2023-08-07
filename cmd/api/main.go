@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -39,16 +40,23 @@ func init() {
 func main() {
 	app := configs.AppConfig
 	fmt.Println(app)
-	appDB, err := handlers.InitializeHandler(&app)
+
+	db := connectToDB(app.DSN)
+	if db == nil {
+		log.Panic("can't connect to database")
+	}
+	defer db.Close()
+	app.DB = db
+
+	err := handlers.InitializeHandler(&app)
 	if err != nil {
-		fmt.Println(err)
+		log.Panic(err)
 		return
 	}
-	defer appDB.Connection().Close()
 
 	middleware.InitializeAuthenticationMiddleware(&app)
 	if err != nil {
-		fmt.Println(err)
+		log.Panic(err)
 		return
 	}
 
@@ -65,4 +73,36 @@ func main() {
 	if err := s.ListenAndServe(); err != nil {
 		log.Fatalln(err)
 	}
+}
+
+func connectToDB(dsn string) *sql.DB {
+	counts := 0
+	for {
+		connection, err := openDB(dsn)
+		if err != nil {
+			log.Println("postgres not yet ready ...")
+		} else {
+			log.Println("connected to database")
+			return connection
+		}
+		if counts > 10 {
+			return nil
+		}
+		log.Print("backing off for 1 second")
+		time.Sleep(time.Second)
+		counts++
+		continue
+	}
+}
+
+func openDB(dsn string) (*sql.DB, error) {
+	db, err := sql.Open("pgx", dsn)
+	if err != nil {
+		return nil, err
+	}
+	err = db.Ping()
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
 }

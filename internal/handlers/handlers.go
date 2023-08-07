@@ -20,6 +20,7 @@ type HandlerFunc interface {
 	InsertUser(user *models.User) (int, error)
 	GetUserOrder(email string) ([]*models.ProductOrder, error)
 	GetUserPayment(email string) ([]*models.ProductPayment, error)
+	GetUserCartByEmail(email string) (int, error)
 	// category
 	GetCategory() ([]*models.Category, error)
 	// product

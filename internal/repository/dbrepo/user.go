@@ -51,6 +51,27 @@ func (m *PostgresDBRepo) InsertUser(user *models.User) (int, error) {
 	return userID, nil
 }
 
+func (m *PostgresDBRepo) GetUserCartByEmail(email string) (int, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `select c.id from public.user u inner join public.cart c on (u.id = c.user_id) where email = $1`
+
+	var cartID int
+	row := m.DB.QueryRowContext(ctx, query, email)
+
+	err := row.Scan(
+		&cartID,
+	)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return cartID, nil
+
+}
+
 func (m *PostgresDBRepo) CreateCartForNewUser(userID int) (int, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()

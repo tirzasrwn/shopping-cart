@@ -12,6 +12,7 @@ type DatabaseRepo interface {
 	GetUserByEmail(email string) (*models.User, error)
 	InsertUser(user *models.User) (int, error)
 	CreateCartForNewUser(userID int) (int, error)
+	GetUserCartByEmail(email string) (int, error)
 	// category
 	GetCategories() ([]*models.Category, error)
 	// product

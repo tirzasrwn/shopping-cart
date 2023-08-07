@@ -26,6 +26,14 @@ func (m *module) InsertUser(user *models.User) (int, error) {
 	return userID, nil
 }
 
+func (m *module) GetUserCartByEmail(email string) (int, error) {
+	cartID, err := m.db.dbrepo.GetUserCartByEmail(email)
+	if err != nil {
+		return 0, err
+	}
+	return cartID, nil
+}
+
 func (m *module) GetUserOrder(email string) ([]*models.ProductOrder, error) {
 	products, err := m.db.dbrepo.GetOrderByUserEmail(email)
 	if err != nil {

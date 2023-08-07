@@ -46,7 +46,24 @@ func GetUserInformation(c *gin.Context) {
 		utils.ErrorJSON(c, err)
 		return
 	}
-	utils.WriteJSON(c, http.StatusOK, user)
+	cartID, err := handlers.Handlers.GetUserCartByEmail(email)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
+	var userData = struct {
+		models.User
+		CartID int `json:"cart_id"`
+	}{
+		User:   *user,
+		CartID: cartID,
+	}
+	data := utils.JSONResponse{
+		Error:   false,
+		Message: "success get user information",
+		Data:    userData,
+	}
+	utils.WriteJSON(c, http.StatusOK, data)
 }
 
 // PostUser godoc

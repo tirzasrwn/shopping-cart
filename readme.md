@@ -69,19 +69,19 @@ make docker_<service>_stop
 
 This API documentaiton using Swagger API documentation. Here are all the routes:
 
-| route                  | method | description                                                                                                            |
-| ---------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------- |
-| /category              | get    | this is api to get product category                                                                                    |
-| /login                 | post   | this is api to authenticate user then returns jwt token                                                                |
-| /product               | get    | this is api to get all product                                                                                         |
-| /product/{category_id} | get    | this is api to get product by category_id. category_id can be found at /category                                       |
-| /register              | post   | this is api to register new user                                                                                       |
-| /user                  | get    | this is api to get all user information                                                                                |
-| /user/checkout         | post   | this api is to checkout and make payment transactions. total payment can be found at get /user/order                   |
-| /user/order            | get    | this api is to get user order                                                                                          |
-| /user/order            | post   | this api to post new order or update the quantity. cart_id can be found at /user. prouduct_id can be found at /product |
-| /user/order/{order_id} | delete | this api to delete order by order_id. order_id can be found at get /user/order                                         |
-| /user/payment          | get    | this api is to get user payment                                                                                        |
+| route                  | method | description                                                                                          |
+| ---------------------- | ------ | ---------------------------------------------------------------------------------------------------- |
+| /category              | get    | this is api to get product category                                                                  |
+| /login                 | post   | this is api to authenticate user then returns jwt token                                              |
+| /product               | get    | this is api to get all product                                                                       |
+| /product/{category_id} | get    | this is api to get product by category_id. category_id can be found at /category                     |
+| /register              | post   | this is api to register new user                                                                     |
+| /user                  | get    | this is api to get all user information                                                              |
+| /user/checkout         | post   | this api is to checkout and make payment transactions. total payment can be found at get /user/order |
+| /user/order            | get    | this api is to get user order                                                                        |
+| /user/order            | post   | this api to post new order or update the quantity. prouduct_id can be found at /product              |
+| /user/order/{order_id} | delete | this api to delete order by order_id. order_id can be found at get /user/order                       |
+| /user/payment          | get    | this api is to get user payment                                                                      |
 
 Swagger API documentaiton can be found at [http://localhost:4000/swagger/index.html](http://localhost:4000/swagger/index.html).
 
@@ -93,7 +93,7 @@ Swagger API documentaiton can be found at [http://localhost:4000/swagger/index.h
 - User can add product to shopping cart
   - login using /login
   - use post /user/order to create new order or add the quantity
-  - cart_id can be found at /user. prouduct_id can be found at /product
+  - prouduct_id can be found at /product
 - User can see list of products that have been added to the shopping cart
   - login
   - user get /user/order

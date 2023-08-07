@@ -11,7 +11,6 @@ import (
 )
 
 type InsertOrderPayload struct {
-	CartID    int `json:"cart_id" example:"1"`
 	ProductID int `json:"product_id" example:"5"`
 	Quantity  int `json:"quantity" example:"1"`
 }
@@ -22,7 +21,6 @@ type InsertOrderPayload struct {
 //	@Tags			user
 //	@Summary		create new order or update the quantity
 //	@Description	this api to post new order or update the quantity
-//	@Description	cart_id can be found at /user
 //	@Description	prouduct_id can be found at /product
 //	@Param			payload	body	InsertOrderPayload	true	"body payload"
 //	@Produce		json
@@ -35,7 +33,18 @@ func InsertOrder(c *gin.Context) {
 		return
 	}
 
-	orderID, err := handlers.Handlers.InsertOrder(request.CartID, request.ProductID, request.Quantity)
+	userEmail, err := getUserEmailFromContex(c)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
+	cartID, err := handlers.Handlers.GetUserCartByEmail(userEmail)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+		return
+	}
+
+	orderID, err := handlers.Handlers.InsertOrder(cartID, request.ProductID, request.Quantity)
 	if err != nil {
 		utils.ErrorJSON(c, err)
 		return

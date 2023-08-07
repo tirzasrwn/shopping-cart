@@ -8,8 +8,12 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/jackc/pgconn"
+	_ "github.com/jackc/pgx/v4"
+	_ "github.com/jackc/pgx/v4/stdlib"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+
 	"github.com/tirzasrwn/shopping-cart/configs"
 	_ "github.com/tirzasrwn/shopping-cart/docs"
 	"github.com/tirzasrwn/shopping-cart/internal/controllers/middleware"

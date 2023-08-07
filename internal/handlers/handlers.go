@@ -7,10 +7,6 @@ import (
 	"github.com/tirzasrwn/shopping-cart/internal/models"
 	"github.com/tirzasrwn/shopping-cart/internal/repository"
 	"github.com/tirzasrwn/shopping-cart/internal/repository/dbrepo"
-
-	_ "github.com/jackc/pgconn"
-	_ "github.com/jackc/pgx/v4"
-	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
 type HandlerFunc interface {

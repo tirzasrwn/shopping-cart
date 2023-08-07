@@ -132,5 +132,5 @@ Swagger API documentaiton can be found at [http://localhost:4000/swagger/index.h
   ```sh
   username: postgres
   password: postgres
-  db name: shopping cart
+  db name: shopping-cart
   ```

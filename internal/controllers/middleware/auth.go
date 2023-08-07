@@ -15,14 +15,13 @@ import (
 )
 
 type Auth struct {
-	Issuer        string
-	Audience      string
-	Secret        string
-	TokenExpiry   time.Duration
-	RefreshExpiry time.Duration
-	CookieDomain  string
-	CookiePath    string
-	CookieName    string
+	Issuer       string
+	Audience     string
+	Secret       string
+	TokenExpiry  time.Duration
+	CookieDomain string
+	CookiePath   string
+	CookieName   string
 }
 
 type JwtUser struct {
@@ -31,22 +30,19 @@ type JwtUser struct {
 }
 
 type TokenPairs struct {
-	Token        string `json:"access_token"`
-	RefreshToken string `json:"-"`
+	Token string `json:"access_token"`
 }
 
 var AdminAuth *Auth
 
 func InitializeAuthenticationMiddleware(app *configs.Config) {
 	AdminAuth = &Auth{
-		Issuer:        app.JWTIssuer,
-		Audience:      app.JWTAudience,
-		Secret:        app.JWTSecret,
-		TokenExpiry:   time.Minute * 15,
-		RefreshExpiry: time.Hour * 24,
-		CookiePath:    "/",
-		CookieName:    "refresh_token",
-		CookieDomain:  app.CookieDomain,
+		Issuer:       app.JWTIssuer,
+		Audience:     app.JWTAudience,
+		Secret:       app.JWTSecret,
+		TokenExpiry:  time.Minute * 15,
+		CookiePath:   "/",
+		CookieDomain: app.CookieDomain,
 	}
 }
 
@@ -72,57 +68,13 @@ func (j *Auth) GenerateTokenPair(user *JwtUser) (TokenPairs, error) {
 		return TokenPairs{}, err
 	}
 
-	// Create a refresh token and set claims
-	refreshToken := jwt.New(jwt.SigningMethodHS256)
-	refreshTokenClaims := refreshToken.Claims.(jwt.MapClaims)
-	refreshTokenClaims["sub"] = fmt.Sprint(user.ID)
-	refreshTokenClaims["iat"] = time.Now().UTC().Unix()
-
-	// Set the expiry for the refresh token
-	refreshTokenClaims["exp"] = time.Now().UTC().Add(j.RefreshExpiry).Unix()
-
-	// Create signed refresh token
-	signedRefreshToken, err := refreshToken.SignedString([]byte(j.Secret))
-	if err != nil {
-		return TokenPairs{}, err
-	}
-
 	// Create TokenPairs and populate with signed tokens
 	var tokenPairs = TokenPairs{
-		Token:        signedAccessToken,
-		RefreshToken: signedRefreshToken,
+		Token: signedAccessToken,
 	}
 
 	// Return TokenPairs
 	return tokenPairs, nil
-}
-
-func (j *Auth) GetRefreshCookie(refreshToken string) *http.Cookie {
-	return &http.Cookie{
-		Name:     j.CookieName,
-		Path:     j.CookiePath,
-		Value:    refreshToken,
-		Expires:  time.Now().Add(j.RefreshExpiry),
-		MaxAge:   int(j.RefreshExpiry.Seconds()),
-		SameSite: http.SameSiteStrictMode,
-		Domain:   j.CookieDomain,
-		HttpOnly: true,
-		Secure:   true,
-	}
-}
-
-func (j *Auth) GetExpiredRefreshCookie() *http.Cookie {
-	return &http.Cookie{
-		Name:     j.CookieName,
-		Path:     j.CookiePath,
-		Value:    "",
-		Expires:  time.Unix(0, 0),
-		MaxAge:   -1,
-		SameSite: http.SameSiteStrictMode,
-		Domain:   j.CookieDomain,
-		HttpOnly: true,
-		Secure:   true,
-	}
 }
 
 func (j *Auth) GetTokenFromHeaderAndVerify(c *gin.Context) (string, jwt.MapClaims, error) {

@@ -195,8 +195,6 @@ func Authenticate(c *gin.Context) {
 		return
 	}
 
-	refreshCookie := middleware.AdminAuth.GetRefreshCookie(tokens.RefreshToken)
-	http.SetCookie(c.Writer, refreshCookie)
 	data := utils.JSONResponse{
 		Error:   false,
 		Message: "success to login",

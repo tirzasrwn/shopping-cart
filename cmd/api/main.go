@@ -29,7 +29,7 @@ func init() {
 }
 
 //	@title			Shopping Cart
-//	@version		1.0
+//	@version		1.2.0
 //	@description	This page is API documentation for API related to shopping-cart
 //	@schemes		http
 //	@host			localhost:4000

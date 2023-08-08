@@ -4,7 +4,7 @@ services:
   postgres:
     container_name: shopping-cart-postgres
     hostname: shopping-cart-postgres
-    image: shopping-cart-postgres:v1.0.0
+    image: shopping-cart-postgres:v1.2.0
     build:
       context: ./db/
       dockerfile: Dockerfile
@@ -19,7 +19,7 @@ services:
   backend:
     container_name: shopping-cart-backend
     hostname: shopping-cart-backend
-    image: shopping-cart-backend:v1.0.0
+    image: shopping-cart-backend:v1.2.0
     build:
       context: ./
       dockerfile: Dockerfile

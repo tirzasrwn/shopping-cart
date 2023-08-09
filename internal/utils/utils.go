@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/tirzasrwn/shopping-cart/internal/logs"
 )
 
 type JSONResponse struct {
@@ -35,6 +36,7 @@ func WriteJSON(c *gin.Context, status int, data interface{}, headers ...http.Hea
 		return err
 	}
 
+	logs.LogEntries.LogThisRequest(c, status, data)
 	return nil
 }
 

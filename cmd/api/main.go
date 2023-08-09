@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
@@ -13,11 +14,15 @@ import (
 	_ "github.com/jackc/pgx/v4/stdlib"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 
 	"github.com/tirzasrwn/shopping-cart/configs"
 	_ "github.com/tirzasrwn/shopping-cart/docs"
 	"github.com/tirzasrwn/shopping-cart/internal/controllers/middleware"
 	"github.com/tirzasrwn/shopping-cart/internal/handlers"
+	"github.com/tirzasrwn/shopping-cart/internal/logs"
 	"github.com/tirzasrwn/shopping-cart/internal/routes"
 )
 
@@ -52,7 +57,25 @@ func main() {
 	defer db.Close()
 	app.DB = db
 
-	err := handlers.InitializeHandler(&app)
+	mongoClient, err := connectToMongo(app.MongoUrl)
+	if err != nil {
+		log.Panic(err)
+	}
+	fmt.Println("success connect to mongo", &mongoClient)
+	defer func(client *mongo.Client) {
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		defer cancel()
+		if err = client.Disconnect(ctx); err != nil {
+			panic(err)
+		}
+	}(mongoClient)
+	err = logs.New(mongoClient)
+	if err != nil {
+		log.Panic(err)
+		return
+	}
+
+	err = handlers.InitializeHandler(&app)
 	if err != nil {
 		log.Panic(err)
 		return
@@ -109,4 +132,26 @@ func openDB(dsn string) (*sql.DB, error) {
 		return nil, err
 	}
 	return db, nil
+}
+
+func connectToMongo(mongoURL string) (*mongo.Client, error) {
+	// Create connection options.
+	clientOption := options.Client().ApplyURI(mongoURL)
+
+	// Connect.
+	log.Println("Connecting to mongo ...")
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	c, err := mongo.Connect(ctx, clientOption)
+	if err != nil {
+		return nil, err
+	}
+	ctx, cancel = context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+	err = c.Ping(ctx, readpref.Primary())
+	if err != nil {
+		return nil, err
+	}
+
+	return c, nil
 }

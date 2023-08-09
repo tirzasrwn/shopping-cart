@@ -20,6 +20,7 @@ type Config struct {
 	JWTIssuer    string
 	JWTAudience  string
 	CookieDomain string
+	MongoUrl     string
 }
 
 func InitializeAppConfig() {
@@ -40,6 +41,6 @@ func InitializeAppConfig() {
 	AppConfig.JWTIssuer = viper.GetString("JWTISSUER")
 	AppConfig.JWTAudience = viper.GetString("JWTAUDIENCE")
 	AppConfig.CookieDomain = viper.GetString("COOKIEDOMAIN")
-
+	AppConfig.MongoUrl = viper.GetString("MONGOURL")
 	log.Println("[INIT] configuration loaded")
 }

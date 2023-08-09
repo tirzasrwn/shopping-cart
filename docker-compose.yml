@@ -4,9 +4,9 @@ services:
   postgres:
     container_name: shopping-cart-postgres
     hostname: shopping-cart-postgres
-    image: shopping-cart-postgres:v1.2.0
+    image: shopping-cart-postgres:v1.3.1
     build:
-      context: ./db/
+      context: ./postgres/
       dockerfile: Dockerfile
     ports:
       - "5432:5432"
@@ -15,11 +15,26 @@ services:
       mode: replicated
       replicas: 1
     volumes:
-      - ./db/data/.postgres/:/var/lib/postgresql/data
+      - ./postgres/data/.postgres/:/var/lib/postgresql/data
+  mongo:
+    container_name: shopping-cart-mongo
+    hostname: shopping-cart-mongo
+    image: shopping-cart-mongo:v1.3.1
+    build:
+      context: ./mongo/
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "27017:27017"
+    deploy:
+      mode: replicated
+      replicas: 1
+    volumes:
+      - ./mongo/data/.mongo/:/data/db
   backend:
     container_name: shopping-cart-backend
     hostname: shopping-cart-backend
-    image: shopping-cart-backend:v1.2.0
+    image: shopping-cart-backend:v1.3.1
     build:
       context: ./
       dockerfile: Dockerfile

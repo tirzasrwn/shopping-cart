@@ -21,6 +21,7 @@
 go.work
 
 .postgres
+.mongo
 todo.md
 docs.go
 swagger.json

@@ -1,0 +1,3 @@
+FROM mongo:4.0.28-xenial AS production
+ENV MONGO_INITDB_ROOT_USERNAME mongo
+ENV MONGO_INITDB_ROOT_PASSWORD mongo

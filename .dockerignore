@@ -3,7 +3,8 @@ build
 .gitignore
 docs
 migration
-db
+postgres
+mongo
 .dockerignore
 Dockerfile
 docker-compose.yml

@@ -53,14 +53,14 @@ make start
 
 - Running spesific docker image
 
-There are two docker images, backend go and database postgresql.
+There are three docker images, backend go, database postgresql, and database mongodb.
 You can run them separately.
 
 ```sh
 make docker_<service>_build
 make docker_<service>_start
 make docker_<service>_stop
-# where <service> is db for database and be for backend
+# where <service> are mg for database mongo, db for database postgres, and be for backend
 ```
 
 ## API Routes
@@ -113,10 +113,11 @@ Swagger API documentaiton can be found at [http://localhost:4000/swagger/index.h
 
 - Port
 
-| service name | port |
-| ------------ | ---- |
-| backend      | 4000 |
-| database     | 5432 |
+| service name | port  |
+| ------------ | ----- |
+| backend      | 4000  |
+| postgresql   | 5432  |
+| mongodb      | 27017 |
 
 - Credential
 
@@ -127,14 +128,29 @@ Swagger API documentaiton can be found at [http://localhost:4000/swagger/index.h
   password: user1
   ```
 
-  - database
+  - postgres database
 
   ```sh
   username: postgres
   password: postgres
-  db name: shopping-cart
+  db_name: shopping-cart
+  ```
+
+  - mongodb database
+
+  ```sh
+  username: mongo
+  password: mongo
+  db_name: logs
+  collection_name: logs
   ```
 
 ## Database Migration
 
 If you want to do a database migration for development, read [this documentation](./internal/migration/readme.md).
+
+## Request Log
+
+This API is implement log with mongodb. So every request will be logged into mongodb. The log would be like this:
+
+![mongodb](./docs/mongodb.png)

@@ -3,7 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 
@@ -71,8 +70,6 @@ func ErrorJSON(c *gin.Context, err error, status ...int) error {
 	var payload JSONResponse
 	payload.Error = true
 	payload.Message = err.Error()
-
-	fmt.Println("-->ErrorJSON: ", err.Error())
 
 	return WriteJSON(c, statusCode, payload)
 }

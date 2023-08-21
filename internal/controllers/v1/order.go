@@ -1,7 +1,9 @@
 package v1
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 
@@ -26,12 +28,18 @@ type InsertOrderPayload struct {
 //	@Produce		json
 //	@Router			/user/order [post]
 func InsertOrder(c *gin.Context) {
+	requestBody, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+	}
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestBody))
 	var request InsertOrderPayload
-	err := c.ShouldBind(&request)
+	err = c.ShouldBind(&request)
 	if err != nil {
 		utils.ErrorJSON(c, err)
 		return
 	}
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestBody))
 
 	userEmail, err := getUserEmailFromContex(c)
 	if err != nil {
@@ -103,12 +111,18 @@ type CheckoutOrderPayload struct {
 //	@Produce		json
 //	@Router			/user/checkout [post]
 func Checkout(c *gin.Context) {
+	requestBody, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+	}
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestBody))
 	var request CheckoutOrderPayload
-	err := c.ShouldBind(&request)
+	err = c.ShouldBind(&request)
 	if err != nil {
 		utils.ErrorJSON(c, err)
 		return
 	}
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestBody))
 	userEmail, err := getUserEmailFromContex(c)
 	if err != nil {
 		utils.ErrorJSON(c, err)

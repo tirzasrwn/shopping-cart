@@ -1,8 +1,10 @@
 package v1
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -75,12 +77,18 @@ func GetUserInformation(c *gin.Context) {
 //	@Produce		json
 //	@Router			/register [post]
 func PostUser(c *gin.Context) {
+	requestBody, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+	}
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestBody))
 	var requestPayload CredentialPayload
-	err := c.ShouldBind(&requestPayload)
+	err = c.ShouldBind(&requestPayload)
 	if err != nil {
 		utils.ErrorJSON(c, err, http.StatusBadRequest)
 		return
 	}
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestBody))
 	var user = models.User{
 		Email:    requestPayload.Email,
 		Password: requestPayload.Password,
@@ -178,12 +186,18 @@ func GetUserPayment(c *gin.Context) {
 //	@Produce		json
 //	@Router			/login [post]
 func Authenticate(c *gin.Context) {
+	requestBody, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		utils.ErrorJSON(c, err)
+	}
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestBody))
 	var requestPayload CredentialPayload
-	err := c.ShouldBind(&requestPayload)
+	err = c.ShouldBind(&requestPayload)
 	if err != nil {
 		utils.ErrorJSON(c, err, http.StatusBadRequest)
 		return
 	}
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestBody))
 	user, err := handlers.Handlers.GetUserByEmail(requestPayload.Email)
 	if err != nil {
 		utils.ErrorJSON(c, errors.New("invalid credentials"), http.StatusBadRequest)

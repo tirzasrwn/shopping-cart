@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gin-contrib/requestid"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 	"go.mongodb.org/mongo-driver/bson"
@@ -29,17 +30,17 @@ func New(mongo *mongo.Client) error {
 }
 
 type LogEntry struct {
-	ID             string      `bson:"_id,omitempty" json:"id,omitempty"`
-	RequestMethod  string      `json:"request_method" bson:"request_method"`
-	RequestURL     string      `json:"request_url" bson:"request_url"`
-	RequestBody    interface{} `json:"request_body" bson:"request_body"`
-	RequestHeader  interface{} `json:"request_header" bson:"request_header"`
-	ResponseBody   interface{} `json:"response_body" bson:"response_body"`
-	ResponseCode   int         `json:"response_code" bson:"response_code"`
-	ResponseHeader interface{} `json:"response_header" bson:"response_header"`
-	User           string      `json:"user" bson:"user"`
-	CreatedAt      time.Time   `bson:"created_at" json:"created_at"`
-	UpdatedAt      time.Time   `bson:"updated_at" json:"updated_at"`
+	ID            string      `bson:"_id,omitempty" json:"id,omitempty"`
+	RequestID     string      `json:"request_id" bson:"request_id"`
+	RequestMethod string      `json:"request_method" bson:"request_method"`
+	RequestURL    string      `json:"request_url" bson:"request_url"`
+	RequestBody   interface{} `json:"request_body" bson:"request_body"`
+	RequestHeader interface{} `json:"request_header" bson:"request_header"`
+	ResponseBody  interface{} `json:"response_body" bson:"response_body"`
+	ResponseCode  int         `json:"response_code" bson:"response_code"`
+	User          string      `json:"user" bson:"user"`
+	CreatedAt     time.Time   `bson:"created_at" json:"created_at"`
+	UpdatedAt     time.Time   `bson:"updated_at" json:"updated_at"`
 }
 
 type LogEntryFunc interface {
@@ -55,16 +56,16 @@ func (l *LogEntry) Insert() error {
 	collection := client.Database("logs").Collection("logs")
 
 	_, err := collection.InsertOne(context.TODO(), LogEntry{
-		RequestMethod:  l.RequestMethod,
-		RequestURL:     l.RequestURL,
-		RequestBody:    l.RequestBody,
-		RequestHeader:  l.RequestHeader,
-		ResponseBody:   l.ResponseBody,
-		ResponseCode:   l.ResponseCode,
-		ResponseHeader: l.ResponseHeader,
-		User:           l.User,
-		CreatedAt:      time.Now(),
-		UpdatedAt:      time.Now(),
+		RequestID:     l.RequestID,
+		RequestMethod: l.RequestMethod,
+		RequestURL:    l.RequestURL,
+		RequestBody:   l.RequestBody,
+		RequestHeader: l.RequestHeader,
+		ResponseBody:  l.ResponseBody,
+		ResponseCode:  l.ResponseCode,
+		User:          l.User,
+		CreatedAt:     time.Now(),
+		UpdatedAt:     time.Now(),
 	})
 	if err != nil {
 		log.Println("Error inserting into log:", err)
@@ -138,13 +139,13 @@ func (l *LogEntry) Update() (*mongo.UpdateResult, error) {
 		bson.M{"_id": docId},
 		bson.D{
 			{Key: "$set", Value: bson.D{
+				{Key: "request_id", Value: l.RequestID},
 				{Key: "request_method", Value: l.RequestMethod},
 				{Key: "request_url", Value: l.RequestURL},
 				{Key: "request_body", Value: l.RequestBody},
 				{Key: "request_header", Value: l.RequestHeader},
 				{Key: "response_body", Value: l.ResponseBody},
 				{Key: "response_code", Value: l.ResponseCode},
-				{Key: "response_header", Value: l.ResponseHeader},
 				{Key: "user", Value: l.User},
 				{Key: "updated_at", Value: time.Now()},
 			}},
@@ -200,6 +201,7 @@ func (l *LogEntry) LogThisRequest(c *gin.Context, status int, data interface{}) 
 	json.Unmarshal(requestBodyRaw, &result)
 
 	le := LogEntry{
+		RequestID:     requestid.Get(c),
 		RequestMethod: c.Request.Method,
 		RequestURL:    c.Request.RequestURI,
 		RequestBody:   result,

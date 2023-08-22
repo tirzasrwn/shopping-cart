@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"github.com/gin-contrib/requestid"
 	"github.com/gin-gonic/gin"
 	"github.com/tirzasrwn/shopping-cart/internal/controllers/middleware"
 	v1 "github.com/tirzasrwn/shopping-cart/internal/controllers/v1"
@@ -8,6 +9,7 @@ import (
 
 func InitializeRouter() (router *gin.Engine) {
 	router = gin.Default()
+	router.Use(requestid.New())
 	router.Use(
 		middleware.CORSMiddleware(),
 	)

@@ -11,6 +11,10 @@ A shopping-cart API for case study using go, go-gin, swaggo, and postgresql. Mai
 - User can checkout and make payment transactions
 - Login and register user
 
+## Personal
+
+Made by [Tirza Sarwono](https://www.linkedin.com/in/tirzasrwn/)
+
 ## Stack
 
 - Go
@@ -119,7 +123,6 @@ Swagger API documentaiton can be found at [http://localhost:4000/swagger/index.h
 | database     | 5432 |
 
 - Credential
-
   - backend
 
   ```sh
